@@ -2,6 +2,10 @@
 
 h1 {
     color: $color2;
-    backface-visibility: auto;
     text-shadow: 2px 2px 2px $color1;
+}
+
+p {
+    color: $color2;
+    font-weight: bold;
 }
