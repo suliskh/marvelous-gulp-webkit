@@ -1,0 +1,7 @@
+@import 'partials/variables.scss';
+
+h1 {
+    color: $color2;
+    backface-visibility: auto;
+    text-shadow: 2px 2px 2px $color1;
+}
