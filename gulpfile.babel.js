@@ -6,6 +6,9 @@ import autoprefixer from 'gulp-autoprefixer';
 import sourcemaps from 'gulp-sourcemaps';
 import babel from 'gulp-babel';
 import plumber from 'gulp-plumber';
+import uglify from 'gulp-uglify';
+import useref from 'gulp-useref';
+import gulpif from 'gulp-if';
 
 import browserSync from 'browser-sync';
 const bs = browserSync.create();
@@ -79,3 +82,13 @@ export const play = gulp.series(clean, gulp.parallel(scripts, scss, css), () => 
     gulp.watch(paths.src.scripts + "**/*.js", scripts);
     gulp.watch(dirs.src + "*.html").on('change', bs.reload);
 });
+
+const build = gulp.series(clean, gulp.parallel(scripts, scss, css), () => {
+    return gulp.src(dirs.src + "*.html")
+        .pipe(useref({searchPath: ['.tmp']}))
+        .pipe(gulpif('*.css', cleanCSS()))
+        .pipe(gulpif('*.js', uglify()))
+        .pipe(gulp.dest(dirs.dist))
+});
+
+export default build;
