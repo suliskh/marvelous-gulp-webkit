@@ -9,6 +9,7 @@ import plumber from 'gulp-plumber';
 import uglify from 'gulp-uglify';
 import useref from 'gulp-useref';
 import gulpif from 'gulp-if';
+import imagemin from 'gulp-imagemin';
 
 import browserSync from 'browser-sync';
 const bs = browserSync.create();
@@ -23,7 +24,8 @@ const dirs = {
 const paths = {
     src: {
         styles: dirs.src + 'styles/',
-        scripts: dirs.src + 'scripts/'
+        scripts: dirs.src + 'scripts/',
+        images: dirs.src + 'images/'
     },
     temp: {
         styles: dirs.temp + 'styles/',
@@ -31,7 +33,8 @@ const paths = {
     },
     dist: {
         styles: dirs.dist + 'css/',
-        scripts: dirs.dist + 'js/'
+        scripts: dirs.dist + 'js/',
+        images: dirs.dist + 'images/'
     }
 }
 
@@ -62,6 +65,12 @@ export const scripts = () => gulp.src(paths.src.scripts + '**/*.js')
     .pipe(gulp.dest(paths.temp.scripts))
     .pipe(bs.stream());
 
+// Minify image
+// -----
+export const images = () => gulp.src(paths.src.images + "**/*")
+    .pipe(imagemin())
+    .pipe(gulp.dest(paths.dist.images));
+
 
 // Delete dist and temp folders
 // -----
@@ -80,15 +89,16 @@ export const play = gulp.series(clean, gulp.parallel(scripts, scss, css), () => 
     gulp.watch(paths.src.styles + "**/*.scss", scss);
     gulp.watch(paths.src.styles + "**/*.css", css);
     gulp.watch(paths.src.scripts + "**/*.js", scripts);
-    gulp.watch(dirs.src + "*.html").on('change', bs.reload);
+    gulp.watch([
+        dirs.src + "*.html",
+        "src/images/**/*" 
+    ]).on('change', bs.reload);
 });
 
-const build = gulp.series(clean, gulp.parallel(scripts, scss, css), () => {
+export const build = gulp.series(clean, gulp.parallel(scripts, scss, css, images), () => {
     return gulp.src(dirs.src + "*.html")
-        .pipe(useref({searchPath: ['.tmp']}))
+        .pipe(useref({searchPath: [dirs.temp, dirs.src]}))
         .pipe(gulpif('*.css', cleanCSS()))
         .pipe(gulpif('*.js', uglify()))
         .pipe(gulp.dest(dirs.dist))
 });
-
-export default build;

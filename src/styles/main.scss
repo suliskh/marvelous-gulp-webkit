@@ -1,11 +1,17 @@
 @import 'partials/variables.scss';
 
-h1 {
-    color: $color2;
-    text-shadow: 2px 2px 2px $color1;
-}
+.wrapper {
+    text-align: center;
+    
+    h1 {
+        color: $color2;
+        text-shadow: 2px 2px 2px $color1;
+    }
+    
+    p {
+        color: $color2;
+        font-weight: bold;
+    }
 
-p {
-    color: $color2;
-    font-weight: bold;
+    img { max-width: 420px; }
 }
