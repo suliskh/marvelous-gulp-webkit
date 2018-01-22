@@ -4,7 +4,12 @@
 
 *Automate your static web development workflow. Transpile javascript, compile scss, add autoprefixer, concatinate javascript and css optimize images, and auto-reload browser*
 ### Install
-You need to have [NodeJS](https://nodejs.org/en/) and [npm](https://www.npmjs.com/) installed on your machine. Then, just download or clone this repo:
+You need to have [NodeJS](https://nodejs.org/en/) and [npm](https://www.npmjs.com/) installed on your machine. 
+Then, install [gulp-cli](https://www.npmjs.com/package/gulp-cli) globally
+```
+$ npm install --global gulp-cli
+```
+Then, clone this repo
 ```
 $ git clone https://github.com/kukuh-sulistyo/marvelous-gulp-webkit.git
 ```
